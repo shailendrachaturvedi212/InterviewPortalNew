@@ -1,0 +1,10 @@
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.vsidx
+# Ignore ffmpeg binaries
+InterviewPortal.API/ffmpeg/ffmpeg.exe
+InterviewPortal.API/ffmpeg/ffprobe.exe
+*.exe

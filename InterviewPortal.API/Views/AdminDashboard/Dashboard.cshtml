@@ -1,0 +1,41 @@
+﻿@model IEnumerable<InterviewPortal.API.Model.InterviewRequest>
+
+<h2>Admin Dashboard</h2>
+
+<p>Welcome, Admin!</p>
+<a asp-controller="Account" asp-action="Logout" class="btn btn-danger mb-3">Logout</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Skills</th>
+            <th>Experience</th>
+            <th>Questions</th>
+            <th>Video</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.CandidateName</td>
+                <td>@user.Skills</td>
+                <td>@user.Experience</td>
+                <td>@user.Questions</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(user.VideoBlobUrl))
+                    {
+                        <a href="@user.VideoBlobUrl" target="_blank" class="btn btn-sm btn-primary">Play Video</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No video</span>
+                    }
+                </td>
+                <td>@user.CreatedAt.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>

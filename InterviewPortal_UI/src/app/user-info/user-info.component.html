@@ -1,0 +1,14 @@
+<form [formGroup]="interviewForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="yearsOfExperience">Years of Experience:</label>
+    <input id="yearsOfExperience" formControlName="yearsOfExperience" type="number" required>
+  </div>
+
+  <div>
+    <label for="skills">Skills (comma-separated):</label>
+    <textarea id="skills" formControlName="skills" required></textarea>
+  </div>
+
+  <button type="submit">Start Interview</button>
+</form>
+

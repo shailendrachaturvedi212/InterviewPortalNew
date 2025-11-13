@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Interview Portal";
+}
+
+<h2>Interview Portal</h2>
+
+<form id="interviewForm">
+    <div>
+        <label for="skills">Skills:</label>
+        <input type="text" id="skills" required placeholder="e.g. .NET, SQL" />
+    </div>
+
+    <div>
+        <label for="experience">Experience (years):</label>
+        <input type="number" id="experience" required placeholder="e.g. 5" />
+    </div>
+
+    <button type="button" id="startInterviewBtn">Start Interview</button>
+</form>
+<script src="/js/interviewpopup.js"></script>
+    <script>
+        document.getElementById('startInterviewBtn').addEventListener('click', async () => {
+            const skills = document.getElementById('skills').value;
+            const experience = document.getElementById('experience').value;
+
+            if (!skills || !experience) {
+                alert('Please fill both fields');
+                return;
+            }
+            console.log("API call Started")
+            const response = await fetch('/Home/GetQuestions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ skills, experience })
+            });
+
+            if (response.ok) {
+                const questions = await response.json();
+            window.openInterviewPopup(questions, skills, experience);
+            } else {
+                alert('Failed to load questions');
+            }
+        });
+    </script>
+
