@@ -27,10 +27,27 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    });
+options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddDbContext<InterviewPortalDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//builder.Services.AddControllersWithViews()
+//    .AddJsonOptions(options =>
+//    {
+//        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+//    });
+
+//builder.Services.AddDbContext<InterviewPortalDBContext>(options =>
+//    options.UseSqlServer(
+//        builder.Configuration.GetConnectionString("DefaultConnection"),
+//        sqlOptions => sqlOptions.EnableRetryOnFailure(
+//            maxRetryCount: 5,                             // Retry up to 5 times
+//            maxRetryDelay: TimeSpan.FromSeconds(10),      // Wait up to 10 seconds between retries
+//            errorNumbersToAdd: null                       // Use default transient error numbers
+//        )
+//    )
+//);
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<InterviewPortalDBContext>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
