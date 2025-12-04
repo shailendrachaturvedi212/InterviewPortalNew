@@ -1,21 +1,39 @@
-﻿@page
+﻿
+@page
 @model LogoutModel
 @{
-    ViewData["Title"] = "Log out";
+    ViewData["Title"] = "Logout";
 }
 
-<header>
-    <h1>@ViewData["Title"]</h1>
-    @{
-        if (User.Identity?.IsAuthenticated ?? false)
+<link rel="stylesheet" href="~/css/logout.css" />
+
+<div class="logout-wrapper">
+    <div class="logout-card">
+
+        <h1>@ViewData["Title"]</h1>
+
+        @if (User.Identity?.IsAuthenticated ?? false)
         {
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+            <p class="logout-text">Are you sure you want to log out?</p>
+
+            <form asp-area="Identity"
+                  asp-page="/Account/Logout"
+                  asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                  method="post">
+
+                <button type="submit" class="btn-logout">Logout</button>
             </form>
+
+            <!-- Back Button -->
+            <a asp-page="/Index" class="btn-back">Back</a>
         }
         else
         {
-            <p>You have successfully logged out of the application.</p>
+            <p class="logout-text">You have successfully logged out of the application.</p>
+
+            <!-- Back Button -->
+            <a asp-page="/Index" class="btn-back">Back</a>
         }
-    }
-</header>
+
+    </div>
+</div>

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35122.118
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11121.172 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewPortal.API", "InterviewPortal.API\InterviewPortal.API.csproj", "{97773A9B-6A87-4CC8-8A70-AD29583B3D6B}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "InterviewPortal_UI", "InterviewPortal_UI\", "{A85B1A67-DFAD-4656-B219-5EA8D0AF4986}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8.1"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_60256"
 		Debug.AspNetCompiler.PhysicalPath = "InterviewPortal_UI\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60256\"

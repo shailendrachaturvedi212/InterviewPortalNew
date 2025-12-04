@@ -30,17 +30,31 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> GetQuestions([FromBody] UserInfoModel model)
     {
-            if (string.IsNullOrWhiteSpace(model.Skills))
-            {
-                return BadRequest("Skills is required.");
-            }
-            // Build the AI prompt
-            var prompt = $"Generate 10 interview questions for {model.experience} of Experience having skills {model.Skills}. " +
-                         $"Only return the questions as a numbered list.";
-            var result = await _kernel.InvokePromptAsync<string>(prompt);
-            // Split into lines if the model returns multiple questions in one block
-            var questions = result?.Split('\n', StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
+        if (string.IsNullOrWhiteSpace(model.Skills))
+        {
+            return BadRequest("Skills is required.");
+        }
+        // Build the AI prompt
+        //var prompt = $"Generate 10 interview questions for {model.experience} of Experience having skills {model.Skills}. " +
+        //             $"Only return the questions as a numbered list.";
+        //var result = await _kernel.InvokePromptAsync<string>(prompt);
+        //// Split into lines if the model returns multiple questions in one block
+        //var questions = result?.Split('\n', StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
 
+        var questions = new List<string>
+    {
+        "What are the main differences between an interface and an abstract class in Java?",
+        "Can you explain how the JVM, JRE, and JDK differ from each other?",
+        "What is the purpose of the 'final' keyword in Java, and where can it be applied?",
+        "How does garbage collection work in Java, and what are the different GC algorithms?",
+        "What is the difference between String, StringBuilder, and StringBuffer?",
+        "Can you explain method overloading vs. method overriding with examples?",
+        "What are the four main principles of Object-Oriented Programming in Java?",
+        "How does Java handle multithreading, and what are the uses of the 'synchronized' keyword?",
+        "What is the difference between HashMap and ConcurrentHashMap?",
+        "What are Java Streams, and how do they support functional programming?"
+    };
+        
         return Json(questions);
 
     }
@@ -68,7 +82,7 @@ public class HomeController : Controller
 
         return Ok(session);
     }
-    
+
     public async Task<IActionResult> AnalyzeAnswer([FromForm] IFormFile video, [FromForm] string candidateName, [FromForm] int experience, [FromForm] string skills, [FromForm] string question, [FromServices] InterviewPortalDBContext db, [FromServices] BlobStorageService blobService)
     {
         if (video == null || video.Length == 0)
@@ -132,7 +146,7 @@ Respond in JSON format:
             new { role = "user", content = prompt }
         }
         };
-       
+
         var response = await client.PostAsync(
             "https://api.openai.com/v1/chat/completions",
             new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json")
@@ -154,16 +168,15 @@ Respond in JSON format:
     }
     private async Task<string> TranscribeSpeechAsync(IFormFile videoFile)
     {
-        
         // Temp file paths
         var tempVideoPath = Path.GetTempFileName() + Path.GetExtension(videoFile.FileName);
         var tempAudioPath = Path.ChangeExtension(tempVideoPath, ".wav");
 
-        // Save video temporarily
-        using (var fileStream = new FileStream(tempVideoPath, FileMode.Create))
-        {
-            await videoFile.CopyToAsync(fileStream);
-        }
+        //// Save video temporarily
+        //using (var fileStream = new FileStream(tempVideoPath, FileMode.bbCreate))
+        //{
+        //    await videoFile.CopyToAsync(fileStream);
+        //}
 
         // Ensure ffmpeg is in the right directory
         var ffmpegPath = Path.Combine(Environment.CurrentDirectory, "ffmpeg");

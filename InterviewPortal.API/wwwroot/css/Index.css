@@ -1,0 +1,149 @@
+﻿
+body {
+    background: linear-gradient(180deg, #0d0d0d, #1a1a1a 50%, #0f0f0f);
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------------------- */
+/*  MAIN CONTAINER        */
+/* ---------------------- */
+
+.interview-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #1b1b1b, #2a2a2a 60%, #1e1e1e);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---------------------- */
+/*  HEADER                */
+/* ---------------------- */
+
+.interview-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .interview-header h1 {
+        font-size: 2.7rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        background: linear-gradient(90deg, #4fa3ff, #b57aff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .interview-header p {
+        color: #d4d4d4;
+        font-size: 1.1rem;
+    }
+
+/* ---------------------- */
+/*  FORM DESIGN           */
+/* ---------------------- */
+
+.interview-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+    .interview-form div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .interview-form label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #f1f1f1;
+    }
+
+    .interview-form input {
+        padding: 13px;
+        border-radius: 10px;
+        border: 1px solid #555;
+        background: #3a3a3a;
+        color: #ffffff;
+        font-size: 1rem;
+        transition: 0.3s ease;
+    }
+
+        .interview-form input::placeholder {
+            color: #b5b5b5;
+        }
+
+        .interview-form input:focus {
+            border-color: #4fa3ff;
+            box-shadow: 0 0 10px rgba(79, 163, 255, 0.3);
+            outline: none;
+        }
+
+/* ---------------------- */
+/*  BUTTON                */
+/* ---------------------- */
+
+.interview-actions {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#startInterviewBtn {
+    padding: 14px 32px;
+    background: linear-gradient(90deg, #4fa3ff, #b57aff);
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+    #startInterviewBtn:hover {
+        background: linear-gradient(90deg, #b57aff, #4fa3ff);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(150, 100, 255, 0.4);
+    }
+
+/* ---------------------- */
+/*  FOOTER                */
+/* ---------------------- */
+
+.footer {
+    text-align: center;
+    margin-top: 45px;
+    font-size: 0.95rem;
+    color: #bbbbbb;
+    letter-spacing: 0.5px;
+}
+
+/* ---------------------- */
+/*  RESPONSIVE            */
+/* ---------------------- */
+
+@media (max-width: 700px) {
+    .interview-form {
+        grid-template-columns: 1fr;
+    }
+
+    .interview-container {
+        padding: 20px;
+    }
+
+    #startInterviewBtn {
+        width: 100%;
+    }
+}

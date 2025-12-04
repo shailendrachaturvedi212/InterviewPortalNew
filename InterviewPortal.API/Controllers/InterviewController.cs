@@ -34,7 +34,7 @@ namespace InterviewPortal.API.Controllers
             // Split into lines if the model returns multiple questions in one block
             var questions = result?.Split('\n', StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
 
-            return Ok(new { questions });
+            return Ok(new { questions });  
         }
 
         [HttpPost("upload")]

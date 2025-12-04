@@ -1,0 +1,113 @@
+﻿body {
+    background: linear-gradient(180deg, #0d0d0d, #1a1a1a 50%, #0f0f0f);
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------------------------------- */
+/* LOGOUT WRAPPER                     */
+/* ---------------------------------- */
+
+.logout-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 20px;
+}
+
+/* ---------------------------------- */
+/* LOGOUT CARD                        */
+/* ---------------------------------- */
+
+.logout-card {
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(180deg, #1b1b1b, #2a2a2a 60%, #1e1e1e);
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+    /* ---------------------------------- */
+    /* HEADER                             */
+    /* ---------------------------------- */
+
+    .logout-card h1 {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg, #4fa3ff, #b57aff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+/* ---------------------------------- */
+/* TEXT                               */
+/* ---------------------------------- */
+
+.logout-text {
+    text-align: center;
+    color: #d4d4d4;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+/* ---------------------------------- */
+/* LOGOUT BUTTON                      */
+/* ---------------------------------- */
+
+.btn-logout {
+    width: 100%;
+    padding: 13px 0;
+    background: linear-gradient(90deg, #4fa3ff, #b57aff);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+    .btn-logout:hover {
+        background: linear-gradient(90deg, #b57aff, #4fa3ff);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(150, 100, 255, 0.4);
+    }
+
+/* ---------------------------------- */
+/* RESPONSIVE                         */
+/* ---------------------------------- */
+
+@media (max-width: 500px) {
+    .logout-card {
+        padding: 25px;
+    }
+}
+.btn-back {
+    width: 100%;
+    padding: 13px 0;
+    background: linear-gradient(90deg, #ff6b6b, #ff3b3b); /* red gradient */
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #ffffff;
+    margin-top: 20px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+    .btn-back:hover {
+        background: linear-gradient(90deg, #ff3b3b, #ff6b6b);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(255, 80, 80, 0.45);
+    }

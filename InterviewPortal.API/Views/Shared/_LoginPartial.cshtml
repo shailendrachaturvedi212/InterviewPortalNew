@@ -1,27 +1,55 @@
-﻿@using Microsoft.AspNetCore.Identity
-
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
+     var email = User.Identity.Name;
+        var displayName = email != null && email.Contains("@") ? email.Split('@')[0] : email;
+
+    
+    <div class="d-flex align-items-center">
+
+        <div class="user-box">
+            <i class="fa-solid fa-user"></i>
+            <span class="user-welcome">
+                    Hello, <span class="user-name">@displayName!</span>
+            </span>
+        </div>
+
+        <a class="logout-btn ms-3"
+           asp-area="Identity"
+           asp-page="/Account/Logout">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+     string currentPage = Context.Request.Path.ToString().ToLower();
+
+    <div class="d-flex align-items-center gap-2">
+
+        @if (currentPage.Contains("/account/login"))
+        {
+            <a class="btn btn-nav"
+               asp-area="Identity"
+               asp-page="/Account/Register">
+                Register
+            </a>
+        }
+        else
+        {
+            <a class="btn btn-nav"
+               asp-area="Identity"
+               asp-page="/Account/Login">
+                Login
+            </a>
+        }
+
+    </div>
 }
-</ul>

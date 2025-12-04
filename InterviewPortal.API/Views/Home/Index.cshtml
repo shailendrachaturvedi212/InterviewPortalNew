@@ -1,23 +1,36 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Interview Portal";
 }
 
-<h2>Interview Portal test</h2>
+<link rel="stylesheet" href="~/css/Index.css" />
 
-<form id="interviewForm">
-    <div>
-        <label for="skills">Skills:</label>
-        <input type="text" id="skills" required placeholder="e.g. .NET, SQL" />
+<div class="interview-container">
+    <div class="interview-header">
+        <h1>Interview Portal</h1>
+        <p>Fill in your skills and experience to start a custom interview session tailored to your profile</p>
     </div>
 
-    <div>
-        <label for="experience">Experience (years):</label>
-        <input type="number" id="experience" required placeholder="e.g. 5" />
-    </div>
+    <form id="interviewForm" class="interview-form">
+        <div>
+            <label for="skills">Skills</label>
+            <input type="text" id="skills" placeholder="e.g. React, Node.js, Python" required />
+        </div>
 
-    <button type="button" id="startInterviewBtn">Start Interview</button>
-</form>
-<script src="/js/interviewpopup.js"></script>
+        <div>
+            <label for="experience">Experience (years)</label>
+            <input type="number" id="experience" placeholder="e.g. 5" required />
+        </div>
+
+        <div class="interview-actions">
+            <button type="button" id="startInterviewBtn">Start Interview</button>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    <script src="/js/interviewpopup.js"></script>
     <script>
         document.getElementById('startInterviewBtn').addEventListener('click', async () => {
             const skills = document.getElementById('skills').value;
@@ -27,19 +40,20 @@
                 alert('Please fill both fields');
                 return;
             }
-            console.log("API call Started")
+
+            console.log("API call Started");
             const response = await fetch('/Home/GetQuestions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ skills, experience })
+                body: JSON.stringify({ Skills: skills, Experience: experience })
             });
 
             if (response.ok) {
                 const questions = await response.json();
-            window.openInterviewPopup(questions, skills, experience);
+                window.openInterviewPopup(questions, skills, experience);
             } else {
                 alert('Failed to load questions');
             }
         });
     </script>
-
+}

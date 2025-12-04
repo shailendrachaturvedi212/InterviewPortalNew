@@ -1,0 +1,159 @@
+﻿
+body {
+    background: linear-gradient(180deg, #0d0d0d, #1a1a1a 50%, #0f0f0f);
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------------------------------- */
+/* LOGIN WRAPPER                      */
+/* ---------------------------------- */
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 20px;
+}
+
+/* ---------------------------------- */
+/* LOGIN CARD (MATCHING INTERVIEW BOX)*/
+/* ---------------------------------- */
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(180deg, #1b1b1b, #2a2a2a 60%, #1e1e1e);
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+    /* ---------------------------------- */
+    /* HEADERS                            */
+    /* ---------------------------------- */
+
+    .login-card h2 {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg, #4fa3ff, #b57aff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+/* ---------------------------------- */
+/* FORM INPUTS (MATCHING INDEX)       */
+/* ---------------------------------- */
+
+.form-floating input {
+    background: #3a3a3a !important;
+    border: 1px solid #555 !important;
+    color: #ffffff !important;
+    padding: 14px;
+    border-radius: 10px !important;
+    transition: 0.3s ease;
+}
+
+.form-floating label {
+    color: #d4d4d4 !important;
+}
+
+.form-floating input::placeholder {
+    color: #b5b5b5 !important;
+}
+
+.form-floating input:focus {
+    border-color: #4fa3ff !important;
+    box-shadow: 0 0 10px rgba(79, 163, 255, 0.3) !important;
+    background: #4c4c4c !important;
+}
+
+/* ---------------------------------- */
+/* CHECKBOX                           */
+/* ---------------------------------- */
+
+.form-check-input {
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+}
+
+    .form-check-input:checked {
+        background-color: #4fa3ff;
+        border-color: #4fa3ff;
+    }
+
+/* ---------------------------------- */
+/* BUTTON (MATCHING INDEX BTN)        */
+/* ---------------------------------- */
+
+.btn-primary {
+    padding: 13px 0;
+    background: linear-gradient(90deg, #4fa3ff, #b57aff);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    transition: transform 0.25s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #b57aff, #4fa3ff);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(150, 100, 255, 0.4);
+    }
+
+/* Outline buttons for external providers */
+.btn-outline-primary {
+    border-radius: 12px;
+    border: 1px solid #4fa3ff;
+    color: #4fa3ff;
+    transition: 0.25s;
+}
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(90deg, #4fa3ff, #b57aff);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(150, 100, 255, 0.4);
+    }
+
+/* ---------------------------------- */
+/* LINKS                              */
+/* ---------------------------------- */
+
+.login-links a {
+    color: #4fa3ff;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+    .login-links a:hover {
+        color: #b57aff;
+    }
+
+/* ---------------------------------- */
+/* EXTERNAL BUTTON WRAPPER            */
+/* ---------------------------------- */
+
+.external-login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ---------------------------------- */
+/* RESPONSIVE                         */
+/* ---------------------------------- */
+
+@media (max-width: 500px) {
+    .login-card {
+        padding: 25px;
+    }
+}

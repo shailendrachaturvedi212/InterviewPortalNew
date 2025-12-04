@@ -1,41 +1,174 @@
-﻿@model IEnumerable<InterviewPortal.API.Model.InterviewRequest>
+﻿
+<link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
 
-<h2>Admin Dashboard</h2>
+<div class="admin-container">
 
-<p>Welcome, Admin!</p>
-<a asp-controller="Account" asp-action="Logout" class="btn btn-danger mb-3">Logout</a>
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Monitor interview submissions, view videos, and track candidate activity.</p>
+    </div>
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th class="sortable" data-column="name">Name</th>
+                    <th class="sortable" data-column="skills">Skills</th>
+                    <th class="sortable" data-column="experience">Experience</th>
+                    <th>Questions</th>
+                    <th>Video</th>
+                    <th class="sortable" data-column="date">Date</th>
+                </tr>
 
-<table class="table table-bordered table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>Name</th>
-            <th>Skills</th>
-            <th>Experience</th>
-            <th>Questions</th>
-            <th>Video</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.CandidateName</td>
-                <td>@user.Skills</td>
-                <td>@user.Experience</td>
-                <td>@user.Questions</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(user.VideoBlobUrl))
-                    {
-                        <a href="@user.VideoBlobUrl" target="_blank" class="btn btn-sm btn-primary">Play Video</a>
-                    }
-                    else
-                    {
-                        <span class="text-muted">No video</span>
-                    }
-                </td>
-                <td>@user.CreatedAt.ToString("g")</td>
-            </tr>
+                <!-- Filter row -->
+                <tr id="filterRow">
+                    <th><input class="filter-input" data-column="name" placeholder="e.g. John"></th>
+                    <th><input class="filter-input" data-column="skills" placeholder="e.g. Java"></th>
+                    <th><input class="filter-input" data-column="experience" placeholder="e.g. 5"></th>
+                    <th></th>
+                    <th></th>
+                    <th><input class="filter-input" data-column="date" placeholder="e.g. 2025"></th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td data-label="Name">@user.CandidateName</td>
+                        <td data-label="Skills">@user.Skills</td>
+                        <td data-label="Experience">@user.Experience</td>
+                        <td data-label="Questions">@user.Questions</td>
+                        <td data-label="Video">
+                            @if (!string.IsNullOrEmpty(user.VideoBlobUrl))
+                            {
+                                <a href="@user.VideoBlobUrl" target="_blank" class="btn-view">View Video</a>
+                            }
+                            else
+                            {
+                                <span class="no-video">No video</span>
+                            }
+                        </td>
+                        <td data-label="Date">@user.CreatedAt.ToString("g")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</div>
+
+@section Scripts {
+   
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const table = document.querySelector(".dashboard-table");
+    const tbody = table.querySelector("tbody");
+
+    // Keep all rows in memory for filtering
+    const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+    // Default sorting
+    let currentSort = { column: "name", direction: "asc" };
+    const initialArrowColumns = ["skills", "experience", "date"];
+
+    // Initial arrows
+    document.querySelectorAll(".sortable").forEach(header => {
+        const col = header.dataset.column;
+        if (col === currentSort.column) {
+            header.classList.add(currentSort.direction);
+        } else if (initialArrowColumns.includes(col)) {
+            header.classList.add("asc");
         }
-    </tbody>
-</table>
+    });
+
+    // Sorting logic
+
+    document.querySelectorAll(".sortable").forEach(header => {
+        header.addEventListener("click", () => {
+            const column = header.dataset.column;
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
+            } else {
+                currentSort.column = column;
+                currentSort.direction = "asc";
+            }
+            applySortAndFilter();
+            highlightArrow();
+        });
+    });
+
+ 
+    // Filtering logic
+    
+    document.querySelectorAll(".filter-input").forEach(input => {
+        input.addEventListener("input", () => {
+            applySortAndFilter();
+        });
+    });
+    // Combined sort + filter
+    
+    function applySortAndFilter() {
+        let rows = allRows.slice(); // start from all rows
+
+        // FILTER
+        document.querySelectorAll(".filter-input").forEach(input => {
+            const filterText = input.value.toLowerCase();
+            const column = input.dataset.column;
+
+            rows = rows.filter(row => {
+                const cell = row.querySelector(`td[data-label='${capitalize(column)}']`);
+                let value = cell ? cell.textContent.toLowerCase() : "";
+
+                if (column === "experience") {
+                    value = extractNumber(value).toString();
+                }
+
+                return value.includes(filterText);
+            });
+        });
+
+        // SORT
+        rows.sort((a, b) => {
+            let valA = a.querySelector(`td[data-label='${capitalize(currentSort.column)}']`).innerText.trim();
+            let valB = b.querySelector(`td[data-label='${capitalize(currentSort.column)}']`).innerText.trim();
+
+            if (currentSort.column === "experience") {
+                valA = parseInt(valA.match(/\d+/)) || 0;
+                valB = parseInt(valB.match(/\d+/)) || 0;
+            }
+
+            if (currentSort.column === "date") {
+                valA = new Date(valA);
+                valB = new Date(valB);
+            }
+
+            return currentSort.direction === "asc" ? (valA > valB ? 1 : valA < valB ? -1 : 0) 
+                                                   : (valA < valB ? 1 : valA > valB ? -1 : 0);
+        });
+
+        // Render
+        tbody.innerHTML = "";
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    function highlightArrow() {
+        document.querySelectorAll(".sortable").forEach(h => h.classList.remove("asc", "desc"));
+        const active = document.querySelector(`.sortable[data-column='${currentSort.column}']`);
+        if (active) active.classList.add(currentSort.direction);
+    }
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function extractNumber(text) {
+        const m = text.match(/\d+/);
+        return m ? parseInt(m[0]) : 0;
+    }
+});
+</script>
+}
+
+
+
+

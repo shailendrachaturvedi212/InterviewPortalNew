@@ -1,0 +1,367 @@
+﻿
+body {
+    background: linear-gradient(180deg, #0d0d0d, #1a1a1a 50%, #0f0f0f);
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------------------------------- */
+/* MAIN CONTAINER                     */
+/* ---------------------------------- */
+
+.admin-container {
+    max-width: 1400px; /* or 100%, or remove entirely */
+    width: 100%; /* ensures it uses full space */
+
+    margin: 2px auto;
+    padding: 20px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #1b1b1b, #2a2a2a 60%, #1e1e1e);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---------------------------------- */
+/* HEADER                             */
+/* ---------------------------------- */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 25px; /* was 45px */
+    padding: 15px 15px; /* was 25px 20px */
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+    .dashboard-header h1 {
+        font-size: 2.2rem; /* was 2.8rem */
+        margin-bottom: 6px; /* was 10px */
+    }
+
+    .dashboard-header p {
+        font-size: 1rem; /* was 1.14rem */
+        opacity: 0.8;
+    }
+
+/* ---------------------------------- */
+/* TABLE WRAPPER                      */
+/* ---------------------------------- */
+
+.table-wrapper {
+    margin-top: 2px;
+    padding: 25px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow-x: auto;
+}
+
+/* ---------------------------------- */
+/* TABLE STYLING                      */
+/* ---------------------------------- */
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .dashboard-table thead tr {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .dashboard-table thead th {
+        padding: 14px 12px;
+        text-align: left;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #ffffff;
+        border-bottom: 1px solid #444;
+    }
+
+    .dashboard-table tbody tr {
+        transition: 0.2s ease;
+    }
+
+        .dashboard-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+    .dashboard-table td {
+        padding: 13px 12px;
+        color: #e6e6e6;
+        border-bottom: 1px solid #333;
+        font-size: 0.98rem;
+    }
+
+/* ---------------------------------- */
+/* IMPROVED DASHBOARD HEADER          */
+/* ---------------------------------- */
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 45px;
+    padding: 25px 20px;
+    border-radius: 14px;
+    /* Soft glass panel style */
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    /* subtle top-glow line */
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+    /* Title styling */
+    .dashboard-header h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        margin-bottom: 10px;
+        background: linear-gradient(90deg, #4fa3ff, #b57aff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 12px rgba(100, 150, 255, 0.25);
+    }
+
+    /* Subtitle styling */
+    .dashboard-header p {
+        font-size: 1.14rem;
+        color: #cfcfcf;
+        letter-spacing: 0.4px;
+        margin-top: 0;
+        opacity: 0.85;
+        line-height: 1.5;
+    }
+
+.admin-container {
+    margin: 40px auto;
+}
+
+/* ---------------------------------- */
+/* VIDEO BUTTON                       */
+/* ---------------------------------- */
+
+.btn-view {
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #4fa3ff, #b57aff);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.25s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .btn-view:hover {
+        background: linear-gradient(90deg, #b57aff, #4fa3ff);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(150, 100, 255, 0.45);
+    }
+
+/* No video text */
+.no-video {
+    color: #b5b5b5;
+    font-style: italic;
+}
+
+/* ---------------------------------- */
+/* RESPONSIVE                         */
+/* ---------------------------------- */
+
+@media (max-width: 700px) {
+    .admin-container {
+        padding: 20px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+
+    .dashboard-table thead {
+        display: none; /* Mobile-friendly stacked layout */
+    }
+
+    .dashboard-table tr {
+        display: block;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .dashboard-table td {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: none;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+        .dashboard-table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #b57aff;
+        }
+}
+
+.experience-search-box {
+    margin-bottom: 10px; /* reduced spacing */
+    display: flex;
+    justify-content: flex-end; /* moves it neatly to the right */
+}
+
+    .experience-search-box input {
+        padding: 6px 12px; /* smaller padding */
+        border-radius: 8px;
+        background: rgba(255,255,255,0.08);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 0.9rem; /* slightly smaller */
+        width: 180px; /* compact width */
+    }
+/* ----------------------------- */
+/* SORTABLE COLUMN HEADER         */
+/* ----------------------------- */
+.sortable {
+    cursor: pointer;
+    position: relative;
+}
+
+    .sortable.asc::after {
+        content: " ▲";
+        color: #b57aff;
+    }
+
+    .sortable.desc::after {
+        content: " ▼";
+        color: #b57aff;
+    }
+
+/* ----------------------------- */
+/* FILTER INPUTS                  */
+/* ----------------------------- */
+#filterRow input.filter-input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 0.95rem;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+    #filterRow input.filter-input:focus {
+        border-color: #b57aff;
+        box-shadow: 0 0 10px rgba(181, 122, 255, 0.35);
+    }
+
+/* ----------------------------- */
+/* TABLE WRAPPER AND DARK THEME  */
+/* ----------------------------- */
+.table-wrapper {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+    .dashboard-table thead tr {
+        background: rgba(255,255,255,0.08);
+    }
+
+    .dashboard-table thead th {
+        padding: 12px 10px;
+        text-align: left;
+        font-weight: 700;
+        font-size: 1rem;
+        border-bottom: 1px solid #444;
+    }
+
+    .dashboard-table tbody tr {
+        transition: 0.2s ease;
+    }
+
+        .dashboard-table tbody tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+    .dashboard-table td {
+        padding: 12px 10px;
+        color: #e6e6e6;
+        border-bottom: 1px solid #333;
+        font-size: 0.98rem;
+    }
+
+/* ----------------------------- */
+/* VIDEO BUTTON                  */
+/* ----------------------------- */
+.btn-view {
+    padding: 6px 12px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #4fa3ff, #b57aff);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .btn-view:hover {
+        background: linear-gradient(90deg, #b57aff, #4fa3ff);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(150,100,255,0.45);
+    }
+
+.no-video {
+    color: #b5b5b5;
+    font-style: italic;
+}
+
+/* ----------------------------- */
+/* RESPONSIVE STYLING             */
+/* ----------------------------- */
+@media (max-width: 700px) {
+    .dashboard-table thead {
+        display: none;
+    }
+
+    .dashboard-table tr {
+        display: block;
+        margin-bottom: 15px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .dashboard-table td {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: none;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+        .dashboard-table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #b57aff;
+        }
+
+    #filterRow input.filter-input {
+        width: 100%;
+        margin-top: 6px;
+        background: rgba(255,255,255,0.1);
+    }
+}
