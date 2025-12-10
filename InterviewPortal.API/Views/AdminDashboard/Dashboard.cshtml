@@ -29,9 +29,8 @@
                     <th><input class="filter-input" data-column="experience" placeholder="5"></th>
                     <th></th>
                     <th></th>
-
-                    <th><input class="filter-input" data-column="aifeedback" placeholder="Good"></th>
-                    <th><input class="filter-input" data-column="accuracy" placeholder="90%"></th>
+                    <th></th>
+                    <th></th>
 
                     <th><input class="filter-input" data-column="date" placeholder="2025"></th>
                 </tr>
@@ -58,33 +57,73 @@
                         </td>
 
                         <td data-label="AI Feedback">@user.AI_Feedback</td>
-                        <td data-label="Accuracy">@user.Accuracy %</td>
+                        <td data-label="Accuracy" data-accuracy="@user.AccuracyScore"></td>
 
                         <td data-label="Date">@user.CreatedAt.ToString("g")</td>
                     </tr>
                 }
             </tbody>
         </table>
+        <div class="pagination" id="pagination"></div>
+
     </div>
 </div>
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+
             const table = document.querySelector(".dashboard-table");
             const tbody = table.querySelector("tbody");
-
             const allRows = Array.from(tbody.querySelectorAll("tr"));
+            const pagination = document.getElementById("pagination");
+
+
+            const rowsPerPage = 5;
+            let currentPage = 1;
+
             let currentSort = { column: "name", direction: "asc" };
 
-            // Sorting
+                   function renderStars() {
+            tbody.querySelectorAll("td[data-accuracy]").forEach(td => {
+                let value = parseInt(td.dataset.accuracy) || 0;
+                let stars = Math.round(value / 20); // 0-100 score → 0-5 stars
+
+                td.innerHTML = ""; // clear content
+
+                for (let i = 1; i <= 5; i++) {
+                    td.innerHTML += `<span class="star-rating ${i <= stars ? '' : 'empty'}">★</span>`;
+                }
+            });
+        }
+
+            function renderPagination(totalRows) {
+
+                const pageCount = Math.ceil(totalRows / rowsPerPage);
+                pagination.innerHTML = "";
+
+                for (let i = 1; i <= pageCount; i++) {
+                    let btn = document.createElement("button");
+                    btn.innerText = i;
+
+                    if (i === currentPage) btn.classList.add("active");
+
+                    btn.addEventListener("click", () => {
+                        currentPage = i;
+                        applySortAndFilter();
+                    });
+
+                    pagination.appendChild(btn);
+                }
+            }
+
             document.querySelectorAll(".sortable").forEach(header => {
                 header.addEventListener("click", () => {
                     const column = header.dataset.column;
 
                     currentSort.direction =
                         currentSort.column === column
-                        ? (currentSort.direction === "asc" ? "desc" : "asc")
-                        : "asc";
+                            ? (currentSort.direction === "asc" ? "desc" : "asc")
+                            : "asc";
 
                     currentSort.column = column;
                     applySortAndFilter();
@@ -98,56 +137,73 @@
                 active.classList.add(currentSort.direction);
             }
 
-            // Filtering
             document.querySelectorAll(".filter-input").forEach(input =>
-                input.addEventListener("input", applySortAndFilter)
+                input.addEventListener("input", () => {
+                    currentPage = 1;
+                    applySortAndFilter();
+                })
             );
 
+
             function applySortAndFilter() {
+
                 let rows = [...allRows];
 
-                // FILTER
-                document.querySelectorAll(".filter-input").forEach(input => {
-                    const column = input.dataset.column;
-                    const filter = input.value.toLowerCase();
+        document.querySelectorAll(".filter-input").forEach(input => {
+            const column = input.dataset.column;
 
-                    rows = rows.filter(row => {
-                        const cell = row.querySelector(`td[data-label="${capitalize(column)}"]`);
-                        if (!cell) return true;
+            // Skip filters for AI Feedback and Accuracy
+            if (column === "aifeedback" || column === "accuracy") return;
 
-                        let text = cell.textContent.toLowerCase();
-                        return text.includes(filter);
-                    });
-                });
+            const filter = input.value.toLowerCase();
+
+            rows = rows.filter(row => {
+                const cell = row.querySelector(`td[data-label="${capitalize(column)}"]`);
+                if (!cell) return true;
+                return cell.textContent.toLowerCase().includes(filter);
+            });
+        });
+
 
                 // SORT
                 rows.sort((a, b) => {
-                    let A = a.querySelector(`td[data-label="${capitalize(currentSort.column)}"]`)?.innerText.trim();
-                    let B = b.querySelector(`td[data-label="${capitalize(currentSort.column)}"]`)?.innerText.trim();
+                    let A = getValue(a, currentSort.column);
+                    let B = getValue(b, currentSort.column);
 
-                    if (currentSort.column === "accuracy") {
-                        A = parseInt(A) || 0;
-                        B = parseInt(B) || 0;
-                    }
-
-                    if (currentSort.column === "date") {
-                        A = new Date(A);
-                        B = new Date(B);
-                    }
-
-                    return currentSort.direction === "asc"
-                        ? (A > B ? 1 : -1)
-                        : (A < B ? 1 : -1);
+                    return currentSort.direction === "asc" ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
                 });
 
-                // Render
+                function getValue(row, col) {
+                    let cell = row.querySelector(`td[data-label="${capitalize(col)}"]`);
+                    if (!cell) return "";
+                    let value = cell.innerText.trim();
+
+                    if (col === "accuracy") return parseInt(cell.dataset.accuracy) || 0;
+                    if (col === "date") return new Date(value);
+                    return value.toLowerCase();
+                }
+
+                // PAGINATE
+                const start = (currentPage - 1) * rowsPerPage;
+                const paginatedRows = rows.slice(start, start + rowsPerPage);
+
+                renderPagination(rows.length);
+
+                // Render rows
                 tbody.innerHTML = "";
-                rows.forEach(r => tbody.appendChild(r));
+                paginatedRows.forEach(r => tbody.appendChild(r));
+
+                renderStars();
             }
+
 
             function capitalize(str) {
                 return str.charAt(0).toUpperCase() + str.slice(1);
             }
+
+            /* Initialize */
+            applySortAndFilter();
         });
     </script>
+
 }

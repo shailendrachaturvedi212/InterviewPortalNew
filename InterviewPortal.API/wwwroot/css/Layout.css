@@ -1,35 +1,43 @@
-﻿html, body {
-    height: 100%;
+﻿/* ========================================================================== */
+/* GLOBAL                                                                     */
+/* ========================================================================== */
+
+html, body {
     margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-
-main {
-    flex: 1; /* pushes footer down */
-}
-
-/* --------------------------------- */
-/* GLOBAL THEME                      */
-/* --------------------------------- */
-body {
     background: linear-gradient(180deg, #0b0b0b, #111 40%, #0d0d0d);
     color: #eaeaea;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: "Segoe UI", sans-serif;
 }
-/* --------------------------------- */
-/* NAVBAR                            */
-/* --------------------------------- */
+
+/* Full-width main content */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 2000px; /* keeps content readable */
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .navbar-custom {
+    width: 100%;
     background: linear-gradient(90deg, #0d0f19, #0c1527 60%, #071421);
     padding: 14px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(12px);
 }
+
+    /* Stretch navbar container full width */
+    .navbar-custom .container {
+        max-width: 95%;
+    }
 
 /* Logo */
 .nav-logo {
@@ -39,7 +47,7 @@ body {
     box-shadow: 0 0 14px rgba(90, 150, 255, 0.35);
 }
 
-/* Title gradient */
+/* Branding */
 .navbar-title {
     font-size: 1.55rem;
     font-weight: 800;
@@ -49,21 +57,17 @@ body {
 }
 
     .navbar-title span {
-        color: #ffffff !important;
+        color: #fff !important;
     }
 
-/* ------------------------------- */
-/* NAV BUTTONS (Login / Register) */
-/* ------------------------------- */
-
+/* Buttons */
 .btn-nav {
     background: linear-gradient(90deg, #4fa3ff, #b57aff);
     color: #fff !important;
-    border: none;
     padding: 8px 20px;
     border-radius: 12px;
     font-weight: 600;
-    font-size: 0.95rem;
+    border: none;
     transition: 0.25s ease;
     box-shadow: 0 0 12px rgba(120, 90, 255, 0.25);
 }
@@ -74,31 +78,26 @@ body {
         box-shadow: 0 0 18px rgba(150, 100, 255, 0.5);
     }
 
-/* ------------------------------- */
-/* USER BOX (When logged in)      */
-/* ------------------------------- */
+/* ========================================================================== */
+/* USER BOX (LOGIN PARTIAL)                                                   */
+/* ========================================================================== */
 
 .user-box {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 6px 18px;
-    background: rgba(255, 255, 255, 0.05);
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
     backdrop-filter: blur(6px);
-    box-shadow: 0 0 14px rgba(90, 150, 255, 0.25);
+    box-shadow: 0 0 14px rgba(90,150,255,0.25);
 }
 
     .user-box i {
         color: #6fb9ff;
         font-size: 1.2rem;
     }
-
-.user-welcome {
-    color: #ffffff;
-    font-size: 0.95rem;
-}
 
 .user-name {
     font-weight: 700;
@@ -107,8 +106,8 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* Logout button */
 .logout-btn {
+    margin-left: 14px;
     color: #ddd;
     font-size: 1rem;
     transition: 0.3s ease;
@@ -117,67 +116,20 @@ body {
     .logout-btn:hover {
         color: #b57aff;
     }
-/* --------------------------------- */
-/* LOGIN PARTIAL USER BOX            */
-/* --------------------------------- */
-.user-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 18px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(6px);
-    box-shadow: 0 0 14px rgba(90, 150, 255, 0.25);
-}
 
-    .user-box i {
-        color: #6fb9ff;
-        font-size: 1.2rem;
-    }
+/* ========================================================================== */
+/* FOOTER                                                                     */
+/* ========================================================================== */
 
-.user-welcome {
-    color: #ffffff;
-    font-size: 0.95rem;
-}
-
-.user-name {
-    font-weight: 700;
-    background: linear-gradient(90deg, #4fa3ff, #9f5fff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Logout button */
-.logout-btn {
-    color: #eee;
-    font-size: 1rem;
-    margin-left: 18px;
-    transition: 0.3s ease;
-}
-
-    .logout-btn:hover {
-        color: #b47afe;
-    }
-
-/* --------------------------------- */
-/* FOOTER                            */
-/* --------------------------------- */
-/* FOOTER (FIXED FOR ALL SCREEN SIZES) */
-/* --------------------------------- */
 .footer-custom {
+    width: 100%;
+    margin-top: auto;
     background: linear-gradient(90deg, #0d0f19, #071421);
     color: #cfcfcf;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,0.05);
     padding: 18px 0;
     text-align: center;
-    width: 100%;
-}
-
-.footer-text {
-    color: #dcdcdc;
+    backdrop-filter: blur(10px);
 }
 
 .footer-link {
@@ -190,110 +142,81 @@ body {
         text-decoration: underline;
     }
 
+/* ========================================================================== */
+/* RESPONSIVENESS                                                             */
+/* ========================================================================== */
 
-/* ------------------------------- */
-/* NAVBAR THEME                   */
-/* ------------------------------- */
-
-.navbar-custom {
-    background: linear-gradient(90deg, #0d0f19, #0c1527 60%, #071421);
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(12px);
-}
-
-/* Logo */
-.nav-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    box-shadow: 0 0 14px rgba(90, 150, 255, 0.35);
-}
-
-/* Title gradient */
-.navbar-title {
-    font-size: 1.55rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, #6fb9ff, #b47afe);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-    .navbar-title span {
-        color: #ffffff !important;
+/*  Tablet */
+@media (max-width: 992px) {
+    .navbar-title {
+        font-size: 1.35rem;
     }
 
-/* ------------------------------- */
-/* NAV BUTTONS (Login / Register) */
-/* ------------------------------- */
-
-.btn-nav {
-    background: linear-gradient(90deg, #4fa3ff, #b57aff);
-    color: #fff !important;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: 0.25s ease;
-    box-shadow: 0 0 12px rgba(120, 90, 255, 0.25);
-}
-
-    .btn-nav:hover {
-        background: linear-gradient(90deg, #b57aff, #4fa3ff);
-        transform: translateY(-3px);
-        box-shadow: 0 0 18px rgba(150, 100, 255, 0.5);
+    main {
+        padding: 15px;
+        width: 100%;
     }
-
-/* ------------------------------- */
-/* USER BOX (When logged in)      */
-/* ------------------------------- */
-
-.user-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 18px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(6px);
-    box-shadow: 0 0 14px rgba(90, 150, 255, 0.25);
 }
 
-    .user-box i {
-        color: #6fb9ff;
+/* Mobile */
+@media (max-width: 576px) {
+    .navbar-title {
         font-size: 1.2rem;
     }
 
-.user-welcome {
-    color: #ffffff;
-    font-size: 0.95rem;
-}
-
-.user-name {
-    font-weight: 700;
-    background: linear-gradient(90deg, #4fa3ff, #9f5fff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Logout button */
-.logout-btn {
-    color: #ddd;
-    font-size: 1rem;
-    transition: 0.3s ease;
-}
-
-    .logout-btn:hover {
-        color: #b57aff;
+    .nav-logo {
+        width: 36px;
+        height: 36px;
     }
-.footer-custom {
-    /* existing styles stay */
-    background: linear-gradient(90deg, #0d0f19, #071421);
-    color: #cfcfcf;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    padding: 15px 0;
-    text-align: center;
+
+    main {
+        padding: 12px;
+    }
+}
+
+/* ========================================================================== */
+/* ULTRAWIDE SCREENS                                                          */
+/* ========================================================================== */
+
+@media (min-width: 2000px) {
+
+    body {
+        font-size: 1.2rem;
+    }
+
+    .navbar-custom .container,
+    main {
+        max-width: 2400px;
+    }
+
+    .navbar-title {
+        font-size: 2.4rem;
+    }
+
+    .footer-custom {
+        padding: 22px 0;
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 2600px) {
+
+    .navbar-custom .container,
+    main {
+        max-width: 2600px;
+    }
+
+    .navbar-title {
+        font-size: 2.8rem;
+    }
+
+    body {
+        font-size: 1.35rem;
+    }
+}
+.main-fullwidth {
+    width: 100%;
+    max-width: 100% !important;
+    margin: 0;
+    padding: 0 20px; /* optional */
 }
