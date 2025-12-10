@@ -1,12 +1,11 @@
-﻿
-<link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+﻿<link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
 
 <div class="admin-container">
-
     <div class="dashboard-header">
         <h1>Admin Dashboard</h1>
         <p>Monitor interview submissions, view videos, and track candidate activity.</p>
     </div>
+
     <div class="table-wrapper">
         <table class="dashboard-table">
             <thead>
@@ -16,19 +15,28 @@
                     <th class="sortable" data-column="experience">Experience</th>
                     <th>Questions</th>
                     <th>Video</th>
+
+                    <!-- NEW COLUMNS -->
+                    <th class="sortable" data-column="aifeedback">AI Feedback</th>
+                    <th class="sortable" data-column="accuracy">Accuracy</th>
+
                     <th class="sortable" data-column="date">Date</th>
                 </tr>
 
-                <!-- Filter row -->
                 <tr id="filterRow">
-                    <th><input class="filter-input" data-column="name" placeholder="e.g. John"></th>
-                    <th><input class="filter-input" data-column="skills" placeholder="e.g. Java"></th>
-                    <th><input class="filter-input" data-column="experience" placeholder="e.g. 5"></th>
+                    <th><input class="filter-input" data-column="name" placeholder="John"></th>
+                    <th><input class="filter-input" data-column="skills" placeholder="Java"></th>
+                    <th><input class="filter-input" data-column="experience" placeholder="5"></th>
                     <th></th>
                     <th></th>
-                    <th><input class="filter-input" data-column="date" placeholder="e.g. 2025"></th>
+
+                    <th><input class="filter-input" data-column="aifeedback" placeholder="Good"></th>
+                    <th><input class="filter-input" data-column="accuracy" placeholder="90%"></th>
+
+                    <th><input class="filter-input" data-column="date" placeholder="2025"></th>
                 </tr>
             </thead>
+
             <tbody id="tableBody">
                 @foreach (var user in Model)
                 {
@@ -37,6 +45,7 @@
                         <td data-label="Skills">@user.Skills</td>
                         <td data-label="Experience">@user.Experience</td>
                         <td data-label="Questions">@user.Questions</td>
+
                         <td data-label="Video">
                             @if (!string.IsNullOrEmpty(user.VideoBlobUrl))
                             {
@@ -47,127 +56,98 @@
                                 <span class="no-video">No video</span>
                             }
                         </td>
+
+                        <td data-label="AI Feedback">@user.AI_Feedback</td>
+                        <td data-label="Accuracy">@user.Accuracy %</td>
+
                         <td data-label="Date">@user.CreatedAt.ToString("g")</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
 </div>
-</div>
-
 @section Scripts {
-   
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const table = document.querySelector(".dashboard-table");
-    const tbody = table.querySelector("tbody");
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const table = document.querySelector(".dashboard-table");
+            const tbody = table.querySelector("tbody");
 
-    // Keep all rows in memory for filtering
-    const allRows = Array.from(tbody.querySelectorAll("tr"));
+            const allRows = Array.from(tbody.querySelectorAll("tr"));
+            let currentSort = { column: "name", direction: "asc" };
 
-    // Default sorting
-    let currentSort = { column: "name", direction: "asc" };
-    const initialArrowColumns = ["skills", "experience", "date"];
+            // Sorting
+            document.querySelectorAll(".sortable").forEach(header => {
+                header.addEventListener("click", () => {
+                    const column = header.dataset.column;
 
-    // Initial arrows
-    document.querySelectorAll(".sortable").forEach(header => {
-        const col = header.dataset.column;
-        if (col === currentSort.column) {
-            header.classList.add(currentSort.direction);
-        } else if (initialArrowColumns.includes(col)) {
-            header.classList.add("asc");
-        }
-    });
+                    currentSort.direction =
+                        currentSort.column === column
+                        ? (currentSort.direction === "asc" ? "desc" : "asc")
+                        : "asc";
 
-    // Sorting logic
-    document.querySelectorAll(".sortable").forEach(header => {
-        header.addEventListener("click", () => {
-            const column = header.dataset.column;
-            if (currentSort.column === column) {
-                currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
-            } else {
-                currentSort.column = column;
-                currentSort.direction = "asc";
-            }
-            applySortAndFilter();
-            highlightArrow();
-        });
-    });
-
- 
-    // Filtering logic
-    
-    document.querySelectorAll(".filter-input").forEach(input => {
-        input.addEventListener("input", () => {
-            applySortAndFilter();
-        });
-    });
-    // Combined sort + filter
-    
-    function applySortAndFilter() {
-        let rows = allRows.slice(); // start from all rows
-
-        // FILTER
-        document.querySelectorAll(".filter-input").forEach(input => {
-            const filterText = input.value.toLowerCase();
-            const column = input.dataset.column;
-
-            rows = rows.filter(row => {
-                const cell = row.querySelector(`td[data-label='${capitalize(column)}']`);
-                let value = cell ? cell.textContent.toLowerCase() : "";
-
-                if (column === "experience") {
-                    value = extractNumber(value).toString();
-                }
-
-                return value.includes(filterText);
+                    currentSort.column = column;
+                    applySortAndFilter();
+                    updateSortIcons();
+                });
             });
-        });
 
-        // SORT
-        rows.sort((a, b) => {
-            let valA = a.querySelector(`td[data-label='${capitalize(currentSort.column)}']`).innerText.trim();
-            let valB = b.querySelector(`td[data-label='${capitalize(currentSort.column)}']`).innerText.trim();
-
-            if (currentSort.column === "experience") {
-                valA = parseInt(valA.match(/\d+/)) || 0;
-                valB = parseInt(valB.match(/\d+/)) || 0;
+            function updateSortIcons() {
+                document.querySelectorAll(".sortable").forEach(h => h.classList.remove("asc", "desc"));
+                const active = document.querySelector(`.sortable[data-column='${currentSort.column}']`);
+                active.classList.add(currentSort.direction);
             }
 
-            if (currentSort.column === "date") {
-                valA = new Date(valA);
-                valB = new Date(valB);
+            // Filtering
+            document.querySelectorAll(".filter-input").forEach(input =>
+                input.addEventListener("input", applySortAndFilter)
+            );
+
+            function applySortAndFilter() {
+                let rows = [...allRows];
+
+                // FILTER
+                document.querySelectorAll(".filter-input").forEach(input => {
+                    const column = input.dataset.column;
+                    const filter = input.value.toLowerCase();
+
+                    rows = rows.filter(row => {
+                        const cell = row.querySelector(`td[data-label="${capitalize(column)}"]`);
+                        if (!cell) return true;
+
+                        let text = cell.textContent.toLowerCase();
+                        return text.includes(filter);
+                    });
+                });
+
+                // SORT
+                rows.sort((a, b) => {
+                    let A = a.querySelector(`td[data-label="${capitalize(currentSort.column)}"]`)?.innerText.trim();
+                    let B = b.querySelector(`td[data-label="${capitalize(currentSort.column)}"]`)?.innerText.trim();
+
+                    if (currentSort.column === "accuracy") {
+                        A = parseInt(A) || 0;
+                        B = parseInt(B) || 0;
+                    }
+
+                    if (currentSort.column === "date") {
+                        A = new Date(A);
+                        B = new Date(B);
+                    }
+
+                    return currentSort.direction === "asc"
+                        ? (A > B ? 1 : -1)
+                        : (A < B ? 1 : -1);
+                });
+
+                // Render
+                tbody.innerHTML = "";
+                rows.forEach(r => tbody.appendChild(r));
             }
 
-            return currentSort.direction === "asc" ? (valA > valB ? 1 : valA < valB ? -1 : 0) 
-                                                   : (valA < valB ? 1 : valA > valB ? -1 : 0);
+            function capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
         });
-
-        // Render
-        tbody.innerHTML = "";
-        rows.forEach(row => tbody.appendChild(row));
-    }
-
-    function highlightArrow() {
-        document.querySelectorAll(".sortable").forEach(h => h.classList.remove("asc", "desc"));
-        const active = document.querySelector(`.sortable[data-column='${currentSort.column}']`);
-        if (active) active.classList.add(currentSort.direction);
-    }
-
-    function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    function extractNumber(text) {
-        const m = text.match(/\d+/);
-        return m ? parseInt(m[0]) : 0;
-    }
-});
-</script>
+    </script>
 }
-
-
-
-
