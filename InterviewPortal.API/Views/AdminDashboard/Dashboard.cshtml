@@ -40,7 +40,7 @@
                         <td data-label="Video">
                             @if (!string.IsNullOrEmpty(user.VideoBlobUrl))
                             {
-                                <a href="@user.VideoBlobUrl" target="_blank" class="btn-view">View Video</a>
+                                <a href="@user.VideoBlobUrl" target="_blank" class="btn-view">Video</a>
                             }
                             else
                             {
@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Sorting logic
-
     document.querySelectorAll(".sortable").forEach(header => {
         header.addEventListener("click", () => {
             const column = header.dataset.column;

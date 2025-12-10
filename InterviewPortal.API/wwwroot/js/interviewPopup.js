@@ -193,7 +193,7 @@
 
 // interviewPopup.js
 
-window.openInterviewPopup = function (questions, skills, experience) {
+window.openInterviewPopup = function (questions, skills, experience, candidateName) {
 
     const popup = window.open('', 'cameraWindow',
         'width=900,height=600,resizable=yes');
@@ -209,6 +209,7 @@ window.openInterviewPopup = function (questions, skills, experience) {
 
     popup.candidateSkills = skills;
     popup.candidateExperience = experience;
+    popup.candidateName = candidateName;
 
     const htmlContent = `
     <!DOCTYPE html>
@@ -368,7 +369,7 @@ window.openInterviewPopup = function (questions, skills, experience) {
                         formData.append('experience', window.candidateExperience);
                         formData.append('skills', window.candidateSkills);
                         formData.append('questions', JSON.stringify(questions));
-                        formData.append('candidateName', 'TestUser');
+                        formData.append('candidateName', window.candidateName || 'UnknownUser');
 
                         fetch('/Home/AnalyzeAnswer', { method: 'POST', body: formData })
                             .then(r => r.json())

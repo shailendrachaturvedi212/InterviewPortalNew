@@ -50,7 +50,8 @@
 
             if (response.ok) {
                 const questions = await response.json();
-                window.openInterviewPopup(questions, skills, experience);
+              window.openInterviewPopup(questions, skills, experience, window.loggedInUserName);
+
             } else {
                 alert('Failed to load questions');
             }

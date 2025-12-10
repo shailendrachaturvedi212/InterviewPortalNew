@@ -1,4 +1,18 @@
-﻿
+﻿html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1; /* pushes footer down */
+}
+
 /* --------------------------------- */
 /* GLOBAL THEME                      */
 /* --------------------------------- */
@@ -150,11 +164,16 @@ body {
 /* --------------------------------- */
 /* FOOTER                            */
 /* --------------------------------- */
+/* FOOTER (FIXED FOR ALL SCREEN SIZES) */
+/* --------------------------------- */
 .footer-custom {
     background: linear-gradient(90deg, #0d0f19, #071421);
     color: #cfcfcf;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
+    padding: 18px 0;
+    text-align: center;
+    width: 100%;
 }
 
 .footer-text {
