@@ -1,57 +1,136 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Interview Portal";
 }
-
-<link rel="stylesheet" href="~/css/Index.css" />
+@section PageStyles {
+    <link rel="stylesheet" href="~/css/Index.css" asp-append-version="true" />
+}
 
 <div class="interview-container">
+
     <div class="interview-header">
-        <h1>Interview Portal</h1>
+        <span class="badge">⚡ AI-Powered Interview</span>
+
+        <h1><span class="title-blue">Interview</span> Portal</h1>
         <p>Fill in your skills and experience to start a custom interview session tailored to your profile</p>
     </div>
 
-    <form id="interviewForm" class="interview-form">
-        <div>
-            <label for="skills">Skills</label>
-            <input type="text" id="skills" placeholder="e.g. React, Node.js, Python" required />
-        </div>
+   <form id="interviewForm" class="interview-form">
 
-        <div>
-            <label for="experience">Experience (years)</label>
-            <input type="number" id="experience" placeholder="e.g. 5" required />
+    <!-- Technology Stack -->
+    <div class="full-width">
+        <label for="techStack">Technology Stack</label>
+        <div class="select-wrapper">
+            <select id="techStack" class="styled-select">
+                <option value="">Select Technology Stack</option>
+                <option value=".NET">.NET Development</option>
+                <option value="Frontend">Frontend Development</option>
+                <option value="Backend">Backend Development</option>
+                <option value="DataScience">Data Science</option>
+                <option value="DevOps">DevOps</option>
+            </select>
         </div>
+        <small>Select a stack to auto-populate skills</small>
+    </div>
 
-        <div class="interview-actions">
-            <button type="button" id="startInterviewBtn">Start Interview</button>
-        </div>
-    </form>
+    <!-- Skills -->
+    <div class="full-width">
+        <label for="skills">Skills</label>
+        <input type="text" id="skills" placeholder="C#, ASP.NET Core, Entity Framework" required />
+        <small>Separate multiple skills with commas</small>
+    </div>
+
+    <!-- Experience -->
+    <div class="full-width">
+        <label for="experience">Experience (years)</label>
+        <input type="number" id="experience" placeholder="e.g. 5" required />
+    </div>
+
+    <!-- IMPORTANT NOTE -->
+    <div class="full-width note-box">
+        <h3>⚠️ Important: Violations to Avoid</h3>
+        <ul>
+            <li>Do not use external help, AI tools, or search engines during the interview</li>
+            <li>Do not switch tabs or leave the interview window</li>
+            <li>Do not attempt to record or screenshot the questions</li>
+            <li>Minimizing the interview window is strictly prohibited — doing so will count as a violation and may lead to elimination</li>
+        </ul>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="full-width checkbox-row">
+        <label class="custom-checkbox">
+            <input type="checkbox" id="agreeCheck">
+            <span class="checkmark"></span>
+            I agree to all the rules and guidelines of the interview process, including maintaining honesty and integrity.
+        </label>
+    </div>
+
+    <!-- Button -->
+    <div class="interview-actions full-width">
+        <button type="button" id="startInterviewBtn" class="disabled-btn" disabled>
+            🚀 Start Interview
+        </button>
+    </div>
+
+</form>
 
 </div>
 
 @section Scripts {
     <script src="/js/interviewpopup.js"></script>
-    <script>
-        document.getElementById('startInterviewBtn').addEventListener('click', async () => {
-            const skills = document.getElementById('skills').value;
-            const experience = document.getElementById('experience').value;
 
-            if (!skills || !experience) {
-                alert('Please fill both fields');
+    <script>
+        // Skill presets
+        const skillMap = {
+            ".NET": "C#, ASP.NET Core, Entity Framework, LINQ, SQL",
+            "Frontend": "HTML, CSS, JavaScript, React, TypeScript",
+            "Backend": "Node.js, Express, MongoDB, REST APIs",
+            "DataScience": "Python, Pandas, NumPy, TensorFlow, Machine Learning",
+            "DevOps": "Docker, Kubernetes, CI/CD, Terraform, Azure DevOps"
+        };
+
+        const stack = document.getElementById("techStack");
+        const skills = document.getElementById("skills");
+        const agreeCheck = document.getElementById("agreeCheck");
+        const startBtn = document.getElementById("startInterviewBtn");
+
+        // Auto-fill skills
+        stack.addEventListener("change", () => {
+            skills.value = skillMap[stack.value] || "";
+        });
+
+        // Checkbox enables button
+        agreeCheck.addEventListener("change", () => { 
+            if (agreeCheck.checked) {
+                startBtn.disabled = false;
+                startBtn.classList.remove("disabled-btn");
+            } else {
+                startBtn.disabled = true;
+                startBtn.classList.add("disabled-btn");
+            }
+        });
+
+        // Submit
+        startBtn.addEventListener('click', async () => {
+            if (startBtn.disabled) return;
+
+            const skillsVal = skills.value.trim();
+            const experienceVal = document.getElementById('experience').value.trim();
+
+            if (!skillsVal || !experienceVal) {
+                alert('Please fill all fields');
                 return;
             }
 
-            console.log("API call Started");
             const response = await fetch('/Home/GetQuestions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ Skills: skills, Experience: experience })
+                body: JSON.stringify({ Skills: skillsVal, Experience: experienceVal })
             });
 
             if (response.ok) {
                 const questions = await response.json();
-              window.openInterviewPopup(questions, skills, experience, window.loggedInUserName);
-
+                window.openInterviewPopup(questions, skillsVal, experienceVal, window.loggedInUserName);
             } else {
                 alert('Failed to load questions');
             }

@@ -1,153 +1,590 @@
-﻿<link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+﻿@using InterviewPortal.API.Model
+
+<link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+
+
 
 <div class="admin-container">
+
     <div class="dashboard-header">
+
         <h1>Admin Dashboard</h1>
+
         <p>Monitor interview submissions, view videos, and track candidate activity.</p>
+
+
+        <div class="header-right">
+            <a href="/Admin/DownloadReports" class="download-btn">
+                <i class="fa fa-download"></i> Download Report
+            </a>
+        </div>
+
     </div>
 
     <div class="table-wrapper">
+
         <table class="dashboard-table">
+
             <thead>
+
                 <tr>
+
                     <th class="sortable" data-column="name">Name</th>
+
                     <th class="sortable" data-column="skills">Skills</th>
+
                     <th class="sortable" data-column="experience">Experience</th>
+
                     <th>Questions</th>
+
                     <th>Video</th>
 
+
+
                     <!-- NEW COLUMNS -->
+
                     <th class="sortable" data-column="aifeedback">AI Feedback</th>
+
                     <th class="sortable" data-column="accuracy">Accuracy</th>
 
+                    <td>Result</td>
+
+                    <td>Remark</td>
+
                     <th class="sortable" data-column="date">Date</th>
+
                 </tr>
+
+
 
                 <tr id="filterRow">
+
                     <th><input class="filter-input" data-column="name" placeholder="John"></th>
+
                     <th><input class="filter-input" data-column="skills" placeholder="Java"></th>
+
                     <th><input class="filter-input" data-column="experience" placeholder="5"></th>
-                    <th></th>
+
                     <th></th>
 
-                    <th><input class="filter-input" data-column="aifeedback" placeholder="Good"></th>
-                    <th><input class="filter-input" data-column="accuracy" placeholder="90%"></th>
+                    <th></th>
+
+                    <th></th>
+
+                    <th></th>
+
+                    <th></th>
+
+                    <th></th>
 
                     <th><input class="filter-input" data-column="date" placeholder="2025"></th>
+
                 </tr>
+
             </thead>
 
+
+
             <tbody id="tableBody">
+
                 @foreach (var user in Model)
+
                 {
+
+                  @*   var latestFeedback = user.Feedback == null ? null : user.Feedback; *@
+
                     <tr>
+
                         <td data-label="Name">@user.CandidateName</td>
+
                         <td data-label="Skills">@user.Skills</td>
+
                         <td data-label="Experience">@user.Experience</td>
+
                         <td data-label="Questions">@user.Questions</td>
 
+
+
                         <td data-label="Video">
+
                             @if (!string.IsNullOrEmpty(user.VideoBlobUrl))
+
                             {
+
                                 <a href="@user.VideoBlobUrl" target="_blank" class="btn-view">Video</a>
+
                             }
+
                             else
+
                             {
+
                                 <span class="no-video">No video</span>
+
                             }
+
                         </td>
 
+
+
                         <td data-label="AI Feedback">@user.AI_Feedback</td>
-                        <td data-label="Accuracy">@user.Accuracy %</td>
+
+                        <td data-label="Accuracy" data-accuracy="@user.AccuracyScore"></td>
+
+                      @*   <td data-label="FeedbackResult">@latestFeedback.Result</td>
+
+                        <td data-label="FeedbackRemark">@latestFeedback.Remark</td> *@
 
                         <td data-label="Date">@user.CreatedAt.ToString("g")</td>
+
+                        <td>
+
+                            <button type="button"
+                                    class="btn-evaluate"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#evaluateModal"
+                                    data-id="@user.Id"
+                                    @* data-result="@(latestFeedback?.Result ?? "")"
+                                    data-remark="@(latestFeedback?.Remark ?? "")" *@
+                            >
+
+                                Evaluate
+
+                            </button>
+
+                        </td>
+
+
+
                     </tr>
+
                 }
+
             </tbody>
+
         </table>
+
+        <div class="pagination" id="pagination"></div>
+
+
+
     </div>
+
 </div>
+
+@Html.AntiForgeryToken()
+
+
+
+<!-- EVALUATE MODAL -->
+
+
+<div class="modal fade dashboard-header" id="evaluateModal" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+
+
+            <form method="post" asp-action="Evaluate" asp-controller="AdminDashboard">
+
+                <input type="hidden" id="CandidateId" name="CandidateId" />
+
+
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">Evaluate Candidate</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+
+                    <div class="mb-3">
+
+                        <label>Result</label>
+
+                        <select id="Result" name="Result" class="form-select">
+
+                            <option value="">-- Select --</option>
+
+                            <option value="Pass">Pass</option>
+
+                            <option value="Fail">Fail</option>
+
+                            <option value="OnHold">On Hold</option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="mb-3">
+
+                        <label>Remark</label>
+
+                        <textarea id="Remark" name="Remark" class="form-control" rows="3"></textarea>
+
+                    </div>
+
+                    <div class="mb-3" style="display:none">
+
+                        <label>ID</label>
+
+                        <textarea id="Id" name="Id" class="form-control" rows="3"></textarea>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <button type="submit" class="btn btn-success">Save</button>
+
+                </div>
+
+
+
+            </form>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+                            <option value="Fail">Fail</option>
+
+                            <option value="OnHold">On Hold</option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="mb-3">
+
+                        <label>Remark</label>
+
+                        <textarea id="Remark" name="Remark" class="form-control" rows="3"></textarea>
+
+                    </div>
+
+                    <div class="mb-3" style="display:none">
+
+                        <label>ID</label>
+
+                        <textarea id="Id" name="Id" class="form-control" rows="3"></textarea>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <button type="submit" class="btn btn-success">Save</button>
+
+                </div>
+       
+        </div>
+
+    </div>
+
+</div>
+
+
+
 @section Scripts {
+
     <script>
+
         document.addEventListener("DOMContentLoaded", () => {
+
             const table = document.querySelector(".dashboard-table");
+
             const tbody = table.querySelector("tbody");
 
             const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+            const pagination = document.getElementById("pagination");
+
+
+
+
+
+            const rowsPerPage = 5;
+
+            let currentPage = 1;
+
+
+
             let currentSort = { column: "name", direction: "asc" };
 
-            // Sorting
-            document.querySelectorAll(".sortable").forEach(header => {
-                header.addEventListener("click", () => {
-                    const column = header.dataset.column;
+                function renderStars() {
+            tbody.querySelectorAll("td[data-accuracy]").forEach(td => {
+                let value = parseInt(td.dataset.accuracy) || 0;
+                let stars = Math.round(value / 20); // 0-5 stars
+                td.innerHTML = "";
 
-                    currentSort.direction =
-                        currentSort.column === column
-                        ? (currentSort.direction === "asc" ? "desc" : "asc")
-                        : "asc";
+                for (let i = 1; i <= 5; i++) {
+                    let star = document.createElement("span");
+                    star.className = "star-rating" + (i <= stars ? "" : " empty");
+                    star.dataset.tooltip = `Score: ${value}%`; // tooltip
+                    star.textContent = "★";
 
-                    currentSort.column = column;
-                    applySortAndFilter();
-                    updateSortIcons();
-                });
+                    // Optional: click shows alert or logs value
+                    star.addEventListener("click", () => {
+                        alert(`Exact Accuracy: ${value}%`);
+                    });
+
+                    td.appendChild(star);
+                }
             });
+        }
 
-            function updateSortIcons() {
-                document.querySelectorAll(".sortable").forEach(h => h.classList.remove("asc", "desc"));
-                const active = document.querySelector(`.sortable[data-column='${currentSort.column}']`);
-                active.classList.add(currentSort.direction);
+
+
+
+            function renderPagination(totalRows) {
+
+
+
+                const pageCount = Math.ceil(totalRows / rowsPerPage);
+
+                pagination.innerHTML = "";
+
+
+
+                for (let i = 1; i <= pageCount; i++) {
+
+                    let btn = document.createElement("button");
+
+                    btn.innerText = i;
+
+
+
+                    if (i === currentPage) btn.classList.add("active");
+
+
+
+                    btn.addEventListener("click", () => {
+
+                        currentPage = i;
+
+                        applySortAndFilter();
+
+                    });
+
+
+
+                    pagination.appendChild(btn);
+
+                }
+
             }
 
-            // Filtering
+
+
+            document.querySelectorAll(".sortable").forEach(header => {
+
+                header.addEventListener("click", () => {
+
+                    const column = header.dataset.column;
+
+
+
+                    currentSort.direction =
+
+                        currentSort.column === column
+
+                            ? (currentSort.direction === "asc" ? "desc" : "asc")
+
+                            : "asc";
+
+
+
+                    currentSort.column = column;
+
+                    applySortAndFilter();
+
+                    updateSortIcons();
+
+                });
+
+            });
+
+
+
+            function updateSortIcons() {
+
+                document.querySelectorAll(".sortable").forEach(h => h.classList.remove("asc", "desc"));
+
+                const active = document.querySelector(`.sortable[data-column='${currentSort.column}']`);
+
+                active.classList.add(currentSort.direction);
+
+            }
+
+
+
             document.querySelectorAll(".filter-input").forEach(input =>
-                input.addEventListener("input", applySortAndFilter)
+
+                input.addEventListener("input", () => {
+
+                    currentPage = 1;
+
+                    applySortAndFilter();
+
+                })
+
             );
 
             function applySortAndFilter() {
+
+
+
                 let rows = [...allRows];
 
-                // FILTER
-                document.querySelectorAll(".filter-input").forEach(input => {
-                    const column = input.dataset.column;
-                    const filter = input.value.toLowerCase();
 
-                    rows = rows.filter(row => {
-                        const cell = row.querySelector(`td[data-label="${capitalize(column)}"]`);
-                        if (!cell) return true;
 
-                        let text = cell.textContent.toLowerCase();
-                        return text.includes(filter);
-                    });
-                });
+        document.querySelectorAll(".filter-input").forEach(input => {
 
-                // SORT
+            const column = input.dataset.column;
+
+
+
+            // Skip filters for AI Feedback and Accuracy
+
+            if (column === "aifeedback" || column === "accuracy") return;
+
+
+
+            const filter = input.value.toLowerCase();
+
+
+
+            rows = rows.filter(row => {
+
+                const cell = row.querySelector(`td[data-label="${capitalize(column)}"]`);
+
+                if (!cell) return true;
+
+                return cell.textContent.toLowerCase().includes(filter);
+
+            });
+
+        });
+
+
                 rows.sort((a, b) => {
-                    let A = a.querySelector(`td[data-label="${capitalize(currentSort.column)}"]`)?.innerText.trim();
-                    let B = b.querySelector(`td[data-label="${capitalize(currentSort.column)}"]`)?.innerText.trim();
 
-                    if (currentSort.column === "accuracy") {
-                        A = parseInt(A) || 0;
-                        B = parseInt(B) || 0;
-                    }
+                    let A = getValue(a, currentSort.column);
 
-                    if (currentSort.column === "date") {
-                        A = new Date(A);
-                        B = new Date(B);
-                    }
+                    let B = getValue(b, currentSort.column);
 
-                    return currentSort.direction === "asc"
-                        ? (A > B ? 1 : -1)
-                        : (A < B ? 1 : -1);
+
+
+                    return currentSort.direction === "asc" ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
+
                 });
 
-                // Render
+
+
+                function getValue(row, col) {
+
+                    let cell = row.querySelector(`td[data-label="${capitalize(col)}"]`);
+
+                    if (!cell) return "";
+
+                    let value = cell.innerText.trim();
+
+
+
+                    if (col === "accuracy") return parseInt(cell.dataset.accuracy) || 0;
+
+                    if (col === "date") return new Date(value);
+
+                    return value.toLowerCase();
+
+                }
+
+                const start = (currentPage - 1) * rowsPerPage;
+
+                const paginatedRows = rows.slice(start, start + rowsPerPage);
+
+
+
+                renderPagination(rows.length);
+
                 tbody.innerHTML = "";
-                rows.forEach(r => tbody.appendChild(r));
+
+                paginatedRows.forEach(r => tbody.appendChild(r));
+
+
+
+                renderStars();
+
             }
 
             function capitalize(str) {
+
                 return str.charAt(0).toUpperCase() + str.slice(1);
+
             }
+
+            applySortAndFilter();
+
         });
+
+
+
     </script>
+
+    <script>
+
+        var evaluateModal = document.getElementById('evaluateModal');
+
+
+
+        evaluateModal.addEventListener('show.bs.modal', function (event) {
+
+            var btn = event.relatedTarget;
+
+
+
+            document.getElementById("Id").value = btn.getAttribute("data-Id");
+
+            document.getElementById("CandidateName").value = btn.getAttribute("data-CandidateName");
+
+            document.getElementById("Result").value = btn.getAttribute("data-result");
+
+            document.getElementById("Remark").value = btn.getAttribute("data-remark");
+
+        });
+
+    </script>
+
+
+
 }
+
