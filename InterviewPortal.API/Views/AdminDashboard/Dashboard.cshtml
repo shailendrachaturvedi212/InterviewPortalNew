@@ -68,6 +68,8 @@
                     <th></th>
 
                     <th></th>
+                    <th></th>
+                    <th></th>
 
                     <th></th>
 
@@ -323,7 +325,6 @@
             const table = document.querySelector(".dashboard-table");
 
             const tbody = table.querySelector("tbody");
-
             const allRows = Array.from(tbody.querySelectorAll("tr"));
 
             const pagination = document.getElementById("pagination");
@@ -459,6 +460,7 @@
 
             );
 
+
             function applySortAndFilter() {
 
 
@@ -496,55 +498,37 @@
         });
 
 
+                // SORT
                 rows.sort((a, b) => {
-
                     let A = getValue(a, currentSort.column);
-
                     let B = getValue(b, currentSort.column);
 
-
-
                     return currentSort.direction === "asc" ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
-
                 });
 
-
-
                 function getValue(row, col) {
-
                     let cell = row.querySelector(`td[data-label="${capitalize(col)}"]`);
-
                     if (!cell) return "";
-
                     let value = cell.innerText.trim();
 
-
-
                     if (col === "accuracy") return parseInt(cell.dataset.accuracy) || 0;
-
                     if (col === "date") return new Date(value);
-
                     return value.toLowerCase();
-
                 }
 
+                // PAGINATE
                 const start = (currentPage - 1) * rowsPerPage;
-
                 const paginatedRows = rows.slice(start, start + rowsPerPage);
-
-
 
                 renderPagination(rows.length);
 
+                // Render rows
                 tbody.innerHTML = "";
-
                 paginatedRows.forEach(r => tbody.appendChild(r));
 
-
-
                 renderStars();
-
             }
+
 
             function capitalize(str) {
 
