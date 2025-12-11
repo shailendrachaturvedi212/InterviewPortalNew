@@ -220,3 +220,22 @@ main {
     margin: 0;
     padding: 0 20px; /* optional */
 }
+.logout-btn {
+    margin-left: 14px;
+    padding: 8px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #d45a6f, #ff758f); /* soft red-pink */
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(212, 90, 111, 0.5), 0 0 14px rgba(255, 117, 143, 0.35);
+}
+
+    .logout-btn:hover {
+        background: linear-gradient(135deg, #ff758f, #d45a6f);
+        transform: translateY(-2px);
+        box-shadow: 0 0 12px rgba(212, 90, 111, 0.7), 0 0 20px rgba(255, 117, 143, 0.55);
+    }
